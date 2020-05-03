@@ -1,0 +1,39 @@
+{
+    "files.exclude": {
+        "**/.DS_Store": true,
+        "**/.git": true,
+        "**/*.js.map": true,
+        "**/bin": true,
+        "**/obj": true
+    },
+    "workbench.iconTheme": "material-icon-theme",
+    "editor.minimap.enabled": false,
+    "breadcrumbs.enabled": false,
+    "terminal.integrated.rendererType": "dom",
+    "window.zoomLevel": 1,
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "prettier.singleQuote": true,
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "csharpextensions.privateMemberPrefix": "_",
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "files.associations": {
+        "*.py": "python"
+    },
+    "[python]": {},
+    "python.linting.pylintArgs": [
+        "----extension-pkg-whitelist=1xml"
+    ],
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "workbench.startupEditor": "newUntitledFile",
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "python.jediEnabled": false,
+    "editor.renderWhitespace": "none"
+}
