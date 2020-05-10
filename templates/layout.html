@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="static/site.css">         
+        {% if title %}
+            <title>{{title}}</title>
+        {% else %}
+            <title>KC Timetracker</title>
+        {% endif %}
+    </head>
+    <body>
+        {% block content %}
+        {% endblock content %}        
+    </body>
+</html>

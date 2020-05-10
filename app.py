@@ -8,4 +8,4 @@ def home():
 
 @app.route('/about')
 def about():
-    return "This is about page"
+    return render_template('about.html')
