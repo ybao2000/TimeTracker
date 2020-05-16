@@ -9,3 +9,19 @@ def home():
 @app.route('/about')
 def about():
     return render_template('about.html')
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+@app.route('/register')
+def register():
+    return render_template('register.html')  
+
+@app.route('/subjects_tasks')
+def subjects_tasks():
+    return render_template('subjects_tasks.html')  
+
+@app.route('/timesheets')
+def timesheets():
+    return render_template('timesheets.html')  
