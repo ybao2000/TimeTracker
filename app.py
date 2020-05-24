@@ -1,5 +1,11 @@
 from flask import Flask, render_template
+from flask_sqlalchemy import SQLAlchemy
+from forms import RegistrationForm
+
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'cdcd1a66-9d2d-11ea-bb37-0242ac130002'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///timetracker.db'
+db = SQLAlchemy(app)
 
 @app.route('/')
 @app.route('/home')
@@ -16,7 +22,8 @@ def login():
 
 @app.route('/register')
 def register():
-    return render_template('register.html')  
+	form = RegistrationForm()
+	return render_template('register.html', form=form)  
 
 @app.route('/subjects_tasks')
 def subjects_tasks():

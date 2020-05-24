@@ -1,9 +1,34 @@
 {% extends "layout.html" %}
 
 {% block header %}
-    <title>KC TimeTracker - About</title>
+    <title>KC TimeTracker - Register</title>
 {% endblock header %}
 
 {% block content %}
-    <h1>Register Page</h1>
+	<div class="content-section">
+		<form>
+			<fieldset class="form-group">
+				<legend>Register Form</legend>
+				<div>
+					{{form.username.label(class="form-control-label")}}
+					{{form.username(class="form-control form-control-lg")}}
+				</div>
+				<div>
+					{{form.email.label(class="form-control-label")}}
+					{{form.email(class="form-control form-control-lg")}}
+				</div>		
+				<div>
+					{{form.password.label(class="form-control-label")}}
+					{{form.password(class="form-control form-control-lg")}}
+				</div>
+				<div>
+					{{form.confirm_password.label(class="form-control-label")}}
+					{{form.confirm_password(class="form-control form-control-lg")}}
+				</div>										
+			</fieldset>
+			<div class="form-group">
+				{{form.submit(class="btn btn-outline-info")}}
+			</div>
+		</form>
+	</div>
 {% endblock content %} 
