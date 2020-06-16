@@ -1,8 +1,8 @@
-from flask import render_template, request, url_for, flash
+from flask import render_template, request, url_for, flash, redirect
 from timetracker.forms import RegistrationForm, LoginForm
 from timetracker import app, db, bcrypt
 from timetracker.models import User
-from flask_login import login_user
+from flask_login import login_user, logout_user, login_required
 
 @app.route('/')
 @app.route('/home')
@@ -20,24 +20,41 @@ def login():
 		user = User.query.filter_by(email=form.email.data).first()
 		if user and bcrypt.check_password_hash(user.password, form.password.data):
 			login_user(user, remember=form.remember.data)
-			return render_template("home")
+			# return render_template("home")
+			return redirect(url_for('home'))
 		else:
 			flash("Login failed. please check email and password", category="danger")
 
 	return render_template('login.html', title='Login', form=form)
 
+@app.route('/logout')
+def logout():
+	logout_user()
+	return redirect(url_for('home'))
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
 	form = RegistrationForm()
 	if form.validate_on_submit():
-		pw_hash = bcrypt.generate_password_hash(form.password.data)
+		pw_hash = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
 		user = User(username=form.username.data, email=form.email.data, password=pw_hash)
 		db.session.add(user)
 		db.session.commit()
 		
-		return render_template('login.html')
-
+		# return render_template('login.html')
+		return redirect(url_for('login'))
+		
 	return render_template('register.html', title='Registration', form=form)  
+
+@app.route('/profile')
+@login_required
+def profile():
+	return render_template('profile.html')
+
+@app.route('/todos')
+@login_required
+def todos():
+	return render_template('todos.html')
 
 @app.route('/subjects_tasks')
 def subjects_tasks():

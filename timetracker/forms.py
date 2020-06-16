@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired, EqualTo, Length, ValidationError
 from flask_login import current_user
 from timetracker.models import User		
@@ -26,3 +26,7 @@ class LoginForm(FlaskForm):
 	password = PasswordField('Password', validators=[DataRequired()])
 	remember = BooleanField('Remember Me')
 	submit = SubmitField('Login')	
+
+class TodoForm(FlaskForm):
+	description = TextAreaField('Description')
+	submit = SubmitField('Submit')

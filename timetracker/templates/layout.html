@@ -29,15 +29,23 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/subjects_tasks">Subject & Task</a>
-                        </li>
+								</li>
+                        <li class="nav-item">
+									<a class="nav-link" href="/todos">Todos</a>
+							  </li>								
                         <li class="nav-item">
                             <a class="nav-link" href="/timesheets">Timesheets</a>
                         </li>
                     </ul>
                 </div>
                 <div class="navbar-nav">
-                    <a class="nav-item nav-link" href="/login">Login</a>
-                    <a class="nav-item nav-link" href="/register">Register</a>
+						 {% if current_user.is_authenticated %}
+							<a class="nav-item nav-link" href="/profile"> {{ current_user.username }}'s' Profile</a>
+							<a class="nav-item nav-link" href="/logout">Logout</a>						 	
+						 {% else %}
+							<a class="nav-item nav-link" href="/login">Login</a>
+							<a class="nav-item nav-link" href="/register">Register</a>
+						 {% endif %}
                 </div>
             </nav> 
         </header>
