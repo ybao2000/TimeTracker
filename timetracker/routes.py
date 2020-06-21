@@ -1,8 +1,9 @@
 from flask import render_template, request, url_for, flash, redirect
 from timetracker.forms import RegistrationForm, LoginForm
 from timetracker import app, db, bcrypt
-from timetracker.models import User
-from flask_login import login_user, logout_user, login_required
+from timetracker.models import User, Todo
+from flask_login import login_user, logout_user, login_required, current_user
+from sqlalchemy import desc
 
 @app.route('/')
 @app.route('/home')
@@ -54,7 +55,8 @@ def profile():
 @app.route('/todos')
 @login_required
 def todos():
-	return render_template('todos.html')
+	todos = Todo.query.filter_by(user_id=current_user.id).order_by(desc(Todo.date_created)).all()
+	return render_template('todos.html', todos=todos)
 
 @app.route('/subjects_tasks')
 def subjects_tasks():

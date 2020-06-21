@@ -6,6 +6,22 @@
 
 {% block content %}
 	<div class="mb-3 mt-3 ml-3 mr-3">
-		<h2>Todo</h2>
+		Todos 
+		<a href="" class="btn btn-primary btn-sm ml-2 mt-1 mb-1">
+			<i class="fa fa-plus-circle"></i> add Todo
+		</a>
+	</div>
+
+	<div class="list-group">
+		{% if todos %}
+			{% for todo in todos %}
+				<h3>Title</h3>
+				<p>{{ todo.description }}</p>
+				date created: {{ todo.date_created }}
+				{% if todo.date_completed %}
+				date completed: {{ todo.date_completed }}
+				{% endif %}
+			{% endfor %}
+		{% endif %}
 	</div>
 {% endblock content %} 
