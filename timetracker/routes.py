@@ -1,5 +1,5 @@
-from flask import render_template, request, url_for, flash, redirect
-from timetracker.forms import RegistrationForm, LoginForm
+from flask import render_template, request, url_for, flash, redirect, abort
+from timetracker.forms import RegistrationForm, LoginForm, TodoForm
 from timetracker import app, db, bcrypt
 from timetracker.models import User, Todo
 from flask_login import login_user, logout_user, login_required, current_user
@@ -65,3 +65,47 @@ def subjects_tasks():
 @app.route('/timesheets')
 def timesheets():
     return render_template('timesheets.html')  
+
+@app.route('/todos/new', methods=['GET', 'POST'])
+@login_required
+def new_todo():
+	form = TodoForm()
+	if form.validate_on_submit():  # POST only
+		todo = Todo(title=form.title.data, description=form.description.data, user_id=current_user.id)
+		db.session.add(todo)
+		db.session.commit()
+		flash(f"Todo '{form.title.data}' has beed added'", category="success")
+		return redirect(url_for('todos'))
+
+	elif request.method == 'GET':  # GET only
+		return render_template('edit_todo.html', title='New Todo', form=form)
+
+@app.route('/todos/<int:todo_id>')
+@login_required
+def todo(todo_id):
+	todo = Todo.query.get_or_404(todo_id)
+
+	return render_template('todo.html', title='Todo', todo=todo)
+
+@app.route('/todos/<int:todo_id>/update', methods=['GET', 'POST'])
+@login_required
+def update_todo(todo_id):
+	todo = Todo.query.get_or_404(todo_id)
+	if todo.user_id != current_user.id:
+		abort(403)
+
+	form = TodoForm()
+	if form.validate_on_submit():  # POST only
+		todo.title = form.title.data
+		todo.description = form.description.data
+		db.session.commit()
+		flash(f"Todo '{form.title.data}' has beed updated'", category="success")
+		return redirect(url_for('todos'))
+
+	elif request.method == 'GET':  # GET only
+		form.title.data = todo.title
+		form.description.data = todo.description
+
+		return render_template('edit_todo.html', title='Update Todo', form=form)
+
+	

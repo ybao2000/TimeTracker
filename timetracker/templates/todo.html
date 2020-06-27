@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block header %}
+    <title>KC TimeTracker - Todo</title>
+{% endblock header %}
+
+{% block content %}
+    <div>
+		 <h2 class="text-primary">Todo</h2>
+		 <div>
+			{% if todo.date_completed %}
+			<h3 class="text-success">{{ todo.title }}</h3>
+			<pre class="text-success">{{ todo.description }}</pre>					
+			{% else %}
+				<h3 class="text-danger">{{ todo.title }}</h3>
+				<pre class="text-danger">{{ todo.description }}</pre>						
+			{% endif %}
+
+			date created: {{ todo.date_created }}
+			{% if todo.date_completed %}
+			date completed: {{ todo.date_completed }}
+			{% endif %}
+			<br><br>
+			<a href="{{ url_for('update_todo', todo_id=todo.id) }}" class="btn btn-warning btn-sm ml-2 mt-1 mb-1">
+				<i class="fa fa-edit-circle"></i> edit
+			</a>
+			<button type="button" class="btn btn-dark btn-sm m-1">Complete</button>
+			<button type="button" class="btn btn-danger btn-sm m-1">Delete</button>		
+		 </div>
+	 </div>
+{% endblock content %} 

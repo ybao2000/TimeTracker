@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block header %}
+    <title>KC TimeTracker - Edit Todo</title>
+{% endblock header %}
+
+{% block content %}
+<div class="content-section">
+	<form method="POST" action="">
+		{{ form.hidden_tag() }}
+		<fieldset class="form-group">
+			<legend>{{ title }}</legend>
+			<div>
+				{{form.title.label(class="form-control-label")}}
+				{% if form.title.errors %}
+					{{form.title(class="form-control form-control-lg is-invalid")}}
+					<div class="invalid-feedback">
+						{% for error in form.title.errors %}
+							<span>{{ error }}</span>
+						{% endfor %}
+					</div>			
+				{% else %}
+					{{form.title(class="form-control form-control-lg")}}
+				{% endif %}
+			</div>		
+			<div>
+				{{form.description.label(class="form-control-label")}}
+				{% if form.description.errors %}
+					{{form.description(class="form-control form-control-lg is-invalid", rows=5)}}
+					<div class="invalid-feedback">
+						{% for error in form.description.errors %}
+							<span>{{ error }}</span>
+						{% endfor %}
+					</div>			
+				{% else %}
+					{{form.description(class="form-control form-control-lg", rows=5)}}
+				{% endif %}
+			</div>									
+		</fieldset>
+		<div class="form-group">
+			{{form.submit(class="btn btn-outline-info")}}
+		</div>
+	</form>
+</div>
+{% endblock content %} 
