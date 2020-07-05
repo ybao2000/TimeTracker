@@ -27,7 +27,3 @@ class LoginForm(FlaskForm):
 	remember = BooleanField('Remember Me')
 	submit = SubmitField('Login')	
 
-class TodoForm(FlaskForm):
-	title = StringField('Title', validators=[DataRequired()])
-	description = TextAreaField('Description')
-	submit = SubmitField('Submit')

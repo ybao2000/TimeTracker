@@ -7,7 +7,7 @@
 {% block content %}
 	<div class="mb-3 mt-3 ml-3 h2">
 		<span class="mr-2">Todos</span>
-		<a href="{{ url_for('new_todo') }}" class="btn btn-primary btn-sm ml-2 mt-1 mb-1">
+		<a href="{{ url_for('todos.new_todo') }}" class="btn btn-primary btn-sm ml-2 mt-1 mb-1">
 			<i class="fa fa-plus-circle"></i> add Todo
 		</a>
 	</div>
@@ -20,7 +20,7 @@
 						<h3 class="text-success">{{ todo.title }}</h3>
 						<pre class="text-success">{{ todo.description }}</pre>					
 					{% else %}
-						<a href="{{ url_for('todo', todo_id=todo.id) }}">
+						<a href="{{ url_for('todos.todo', todo_id=todo.id) }}">
 							<h3 class="text-danger">{{ todo.title }}</h3>
 						</a>
 						<pre class="text-danger">{{ todo.description }}</pre>						
