@@ -1,9 +1,43 @@
 {% extends "layout.html" %}
 
 {% block header %}
-    <title>KC TimeTracker - About</title>
+    <title>KC TimeTracker - Subjects</title>
 {% endblock header %}
 
 {% block content %}
-    <h1>Subjects & Tasks Page</h1>
+	<div class="mb-3 mt-3 ml-3 h2">
+		<span class="mr-2">Subjects</span>
+		<a href="{{ url_for('subjects.new_subject') }}" class="btn btn-primary btn-sm ml-2 mt-1 mb-1">
+			<i class="fa fa-plus-circle"></i> add Subject
+		</a>
+	</div>
+
+	<div class="list-group list-group-root well">
+		{% if subjects %}
+      {% for subject in subjects %}
+      <div class="list_group_item mb-3">
+          <a href="#item-{{subject.id}}" class="toggle-icon" data-toggle="collapse">
+              <i class="fa fa-angle-right fa-2x"></i>
+          </a>
+          <a href="{{url_for('subjects.subject', subject_id=subject.id)}}" class="h4 
+          {% if subject.active %} text-primary {% else %} text-secondary {% endif %}">
+          {{subject.name}}</a>
+          <p>{{subject.description}}</p>
+      </div>
+
+      <div class="list-group collapse mb-3" id="item-{{subject.id}}">
+          {% if subject.tasks %}
+              <div class="list-group" id={{subject.name}}>
+                  {% for task in subject.tasks %}
+                      <div class="list-group-item">
+                          <a href="#" class="h4 text-info">{{task.name}}</a>
+                          <p>{{task.description}}</p>
+                      </div>
+                  {% endfor %}                         
+              </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+		{% endif %}
+	</div>
 {% endblock content %} 
