@@ -1,0 +1,68 @@
+{% extends "layout.html" %} {% block content %}
+<div class="mb-3">
+  <h2>Subject: {{task.subject.name}}</h2>
+  <p>Description: {{task.subject.description}}</p>
+</div>
+<div class="ml-5 h3">
+  Task:
+  <span
+    class="{% if task.active %} text-primary {% else %} text-secondary {% endif %}"
+  >
+    {{task.name}}
+  </span>
+  &nbsp;&nbsp;
+  <a
+    href="{{url_for('tasks.update_task', task_id=task.id)}}"
+    class="btn btn-warning btn-sm mt-1 mb-1"
+  >
+    <i class="fa fa-edit"></i> edit
+  </a>
+  <button
+    type="button"
+    class="btn btn-danger btn-sm m-1"
+    data-toggle="modal"
+    data-target="#deleteModal"
+  >
+    Delete
+  </button>
+  <p>Description: {{task.description}}</p>
+</div>
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="deleteModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="deleteModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">
+          Delete Task '{{task.name}}'?
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+        <form
+          action="{{url_for('tasks.delete_task', task_id=task.id)}}"
+          method="POST"
+        >
+          <input class="btn btn-danger" type="submit" value="Delete" />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,101 @@
+{% extends "layout.html" %}
+
+{% block stylesheet %}
+<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet"> 
+{% endblock stylesheet %}   
+
+{% block content %}
+    <legend>Weekly Timesheets</legend>
+    <div class="row mb-5">
+        <div class="col-md-4">
+            Date: <input type = "text" id = "datepicker" value="{{date.strftime('%Y-%m-%d')}}">
+        </div>
+        <div class="offset-md-4 col-md-2">
+            <a
+            href="{{url_for('timesheets.weekly_report', date=date.strftime('%Y-%m-%d'))}}"
+            class="btn btn-primary btn-sm mt-1 mb-1"
+          >
+            <i class="fa fa-file-excel"></i> Weekly Report
+          </a>
+        </div>
+        <div class="col-md-2">
+            <a
+            href="{{url_for('timesheets.monthly_report', date=date.strftime('%Y-%m-%d'))}}"
+            class="btn btn-info btn-sm mt-1 mb-1"
+          >
+            <i class="fa fa-file-excel"></i> Monthly Report
+          </a>
+        </div>
+    </div>
+
+    {% if dictTS %}
+        <div class="container" id="ts">
+            <div class="row ts-start">
+                <div class="col-md-2">Subject</div>                
+                <div class="col-md-2">Task</div>
+                {% for dt in dates %}
+                    {%if dt.day == date.day %}
+                    <div class="col-md-1 text-danger">{{dt.strftime('%a %m-%d')}}</div>    
+                    {% else %}
+                    <div class="col-md-1 text-secondary">{{dt.strftime('%a %m-%d')}}</div>                        
+                    {% endif %} 
+                {% endfor %}
+                <div class="col-md-1">Total</div>
+            </div>
+            {% for tr, cells in dictTS.items() %}
+                <div class="row">
+                    <div class="col-md-2">{{tr.Subject.name}}</div>
+                    <div class="col-md-2">{% if tr.Task %} {{tr.Task.name}} {% endif %}</div>
+                    {% for cell in cells %}
+                        <div class="col-md-1 no-padding">
+                            {% if tr.Task %}
+                                <a href="{{url_for('timesheets.timesheet', subject_id=tr.Subject.id, task_id=tr.Task.id, date=cell.Date)}}">                                   
+                                    <button type="button" class="btn btn-link full-size" data-toggle="tooltip" data-placement="bottom" title="{{cell.Description}}">
+                                        {% if cell.Workhours %} {{cell.Workhours}} {% endif %}
+                                    </button>
+                                </a>        
+                            {% else %}                       
+                                <a href="{{url_for('timesheets.timesheet', subject_id=tr.Subject.id, date=cell.Date)}}">
+                                    <button type="button" class="btn btn-link full-size" data-toggle="tooltip" data-placement="bottom" title="{{cell.Description}}">
+                                        {% if cell.Workhours %} {{cell.Workhours}} {% endif %}
+                                    </button>  
+                                </a> 
+                            {% endif %}                                                              
+                        </div> 
+                    {% endfor %}
+                    <div class="col-md-1 text-secondary text-center">{% if tr.Workhours %} {{tr.Workhours}} {% endif %}</div>
+                </div>
+            {% endfor %}
+            <!-- todo - add total row -->
+            <div class="row ts-end">
+                <div class="col-md-2">Total</div>
+                <div class="col-md-2"></div>
+                {% for sub_total in sub_totals %}
+                    <div class="col-md-1 text-center">{% if sub_total %} {{sub_total}} {% endif %}</div>
+                {% endfor %}
+                <div class="col-md-1 text-center">{% if total %} {{total}} {% endif %}</div>
+            </div>
+        </div>
+    {% endif %}  
+{% endblock content %}
+
+{% block script %}
+    <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $( document ).ready(function() {
+            $(function() {
+                $( "#datepicker" ).datepicker({
+                showOn:"button",
+                buttonImage: "/static/images/calendar-icon.png",
+                buttonImageOnly: true,
+                dateFormat:"yy-mm-dd",
+                onSelect: function(dateText, intst) {
+                    var date = $(this).val()
+                    window.location='/weekly_timesheets?date='+date;
+                }
+                });
+                $( ".ui-datepicker-trigger" ).css('cursor','pointer');   
+            });          
+        });    
+    </script>
+{% endblock script %} 

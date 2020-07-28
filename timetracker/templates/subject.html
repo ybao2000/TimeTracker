@@ -1,0 +1,86 @@
+{% extends "layout.html" %} {% block content %}
+<div class="mb-3 h2">
+  Subject: 
+  <span
+    class="{% if subject.active %} text-primary {% else %} text-secondary {% endif %}"
+  >
+    {{title}}
+  </span>
+  &nbsp;&nbsp;
+  <a
+    href="{{url_for('subjects.update_subject', subject_id=subject.id)}}"
+    class="btn btn-warning btn-sm mt-1 mb-1"
+  >
+    <i class="fa fa-edit"></i> edit
+  </a>
+  {% if not subject.tasks %}
+  <button
+    type="button"
+    class="btn btn-danger btn-sm m-1"
+    data-toggle="modal"
+    data-target="#deleteModal"
+  >
+    Delete
+  </button>
+  {% endif %}
+  <p>  Description: 
+    {{subject.description}}
+  </p>
+</div>
+<div class="list-group">
+  {% if subject.tasks %} {% for task in subject.tasks %}
+  <div class="list-group-item">
+    <a href="{{url_for('tasks.task', task_id=task.id)}}" class="h4 
+    {% if task.active %} text-primary {% else %} text-secondary {% endif %}">
+    {{task.name}}</a>
+    <p>{{task.description}}</p>
+  </div>
+  {% endfor %} {% endif %}
+  <div class="list-group-item">
+    <a
+      href="{{url_for('tasks.new_task', subject_id=subject.id)}}"
+      class="btn btn-primary btn-sm mt-1 mb-1"
+    >
+      <i class="fa fa-plus-circle"></i> add task
+    </a>    
+  </div>
+</div>
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="deleteModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="deleteModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">
+          Delete Subject '{{subject.name}}'?
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+        <form
+          action="{{url_for('subjects.delete_subject', subject_id=subject.id)}}"
+          method="POST"
+        >
+          <input class="btn btn-danger" type="submit" value="Delete" />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

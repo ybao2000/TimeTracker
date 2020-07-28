@@ -49,6 +49,28 @@ class Task(db.Model):
   def __repf__(self):
   		return f"Name: '{self.name}', Date: '{self.date_created}'"
 
+
+class Timesheet(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    workhours = db.Column(db.Numeric(5,1), nullable=False)
+    description=db.Column(db.Text, nullable=True)    
+    date_created = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    date_updated = db.Column(db.DateTime, nullable=True)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user = db.relationship('User', backref=db.backref('timesheets', lazy=True))
+    subject_id = db.Column(db.Integer, db.ForeignKey('subject.id'), nullable=False)
+    subject = db.relationship('Subject', backref=db.backref('timesheets', lazy=True))
+    task_id = db.Column(db.Integer, db.ForeignKey('task.id'), nullable=True)
+    task = db.relationship('Task', backref=db.backref('timesheets', lazy=True))
+
+    def __repr__(self):
+        if self.task:
+            return f"Timesheet('{self.subject.name}', '{self.task.name}', '{self.date_created}', '{self.hours}')"
+        else:
+            return f"Timesheet('{self.subject.name}', '{self.date_created}', '{self.hours}')"
+
 @login_manager.user_loader
 def load_user(user_id):
-	return User.query.get(int(user_id))
+    return User.query.get(int(user_id))
